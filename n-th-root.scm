@@ -1,0 +1,11 @@
+(load "fixed-point")
+(load "commonfunc")
+(load "average-damp")
+(load "repeats")
+(define (log2 n)
+  (/ (log n) (log 2)))
+
+(define (nth-root x n)
+  (define (root-iter times degree)
+    (fixed-point ((repeated average-damp times) (lambda (y) (/ x ((power (- degree 1)) y)))) 1.0))
+  (root-iter (floor (log2 n)) n))

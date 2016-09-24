@@ -1,0 +1,1 @@
+;;;Because parse-word handle it from left to right,if you take the input in some other order,it is conflict with the parse-word procedure. It will produce the different even totally wrong meaning from the original.

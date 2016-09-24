@@ -1,0 +1,15 @@
+(define (install-triangle-package)
+  (define (sine-ordinary x)
+    (sin x))
+  (define (sine-rational x)
+    (sin (/ (numer x) (denom x))))
+  (define (cosine-ordinary x)
+    (cos x))
+  (define (cosine-rational x)
+    (cos (/ (numer x) (denom x))))
+  (put 'sine 'scheme-num sine-ordinary)
+  (put 'sine 'rational sine-rational)
+  (put 'cosine 'scheme-num cosine-ordinary)
+  (put 'cosine 'rational cosine-rational)
+
+  

@@ -1,0 +1,12 @@
+(define (install-raise-op)
+  (define (integer2rational i)
+    (cons i 1))
+  (define (rational2real r)
+    (/ (numer r) (denom r)))
+  (define (real2complex real)
+    (cons real 0))
+  (put-tower 'raise 'integer integer2rational)
+  (put-tower 'raise 'rational rational2real)
+  (put-tower 'raise 'real real2complex)
+  'done)
+

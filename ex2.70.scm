@@ -1,0 +1,5 @@
+(load "huffmantree")
+(define eight-sym '((a 2) (na 16) (boom 1) (Sha 3) (Get 2) (yip 9) (job 2) (Wah 1)))
+(define huff-for-song (generate-huffman-tree eight-sym))
+(define lirics '(Get a job Sha na na na na na na na na Get a job Sha na na na na na na na na Wah yip yip yip yip yip yip yip yip yip Sha boom))
+(define final (encode lirics huff-for-song))

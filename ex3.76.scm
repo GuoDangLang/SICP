@@ -1,0 +1,7 @@
+(define (smooth s)
+  (stream-map (lambda (x y) (/ (+ x y) 2))
+	      (cons-stream 0 s)
+	      s))
+(define (make-zero input smooth)
+  (let ((after-smooth (smooth input)))
+    (stream-map sign-change-detector after-smooth (cons-stream 0 after-smooth))))

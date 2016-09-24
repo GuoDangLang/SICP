@@ -1,0 +1,35 @@
+(load "stream-pac")
+(define ones (cons-stream 1 ones))
+(define integers
+  (cons-stream 0 (add-stream ones integers)))
+(define (interleave a b)
+  (if (stream-null? a)
+    b
+    (cons-stream (stream-car a)
+		 (interleave b (stream-cdr a)))))
+(define (lows t s)
+  (cons-stream (list (stream-car t) (stream-car s))
+	       (interleave (stream-map (lambda (x) (list x (stream-car s)))
+				       (stream-cdr t))
+			   (lows (stream-cdr t) (stream-cdr s)))))
+(define (pairs s t)
+  (cons-stream
+    (list (stream-car s) (stream-car t))
+    (interleave
+      (stream-map (lambda (x) (list (stream-car s) x))
+		  (stream-cdr t))
+      (pairs (stream-cdr s) (stream-cdr t)))))
+(define (all-pairs s t)
+  (interleave (pairs s t) (lows (stream-cdr t) s)))
+(define ans (all-pairs integers integers))
+;;;verison 2
+(define (all-pairs2 s t)
+  (cons-stream (list (stream-car s) (stream-car t))
+	       (interleave
+		 (interleave (stream-map (lambda (x) (list (stream-car s)
+							   x))
+					 (stream-cdr t))
+			     (all-pairs2 (stream-cdr s) (stream-cdr t)))
+		 (stream-map (lambda (x) (list x (stream-car s)))
+			     (stream-cdr t)))))
+(define ans2 (all-pairs2 integers integers))

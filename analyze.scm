@@ -1,0 +1,7 @@
+(define (pair)
+  (let ((a (amb 1 2 3 4 5))
+	(b (amb 3 4 5 6 7)))
+    (require (>= a b))
+    (list a b)))
+(define (require p)
+  (if (not p) (amb)))

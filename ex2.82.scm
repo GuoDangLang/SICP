@@ -1,0 +1,57 @@
+(define (apply-generic op . args)
+  (let ((howmany (length args))
+	(typetags (map type-tag args)))
+    (let ((proc (get op typetags)))
+      (if proc 
+	(apply proc (map contents args))
+	(define (transful? obj-tag tag-args)
+	  (if (null? tag-args) true
+	    (if (eq? (car tag-args) (obj-tag))
+	      (transful? obj-tag (cdr tag-args))
+	      (if (get-coercion (car tag-args) obj-tag)
+		(and true (transful? obj (cdr tag-args)))
+		false)))
+	(define (tran2 obj-tag  args)
+	  (let ((typetags (map type-tag args)))
+	    (if (transful? obj-tag typetags)
+	      (define (tran obj-tag args)
+		(if (null? args) '()
+		(let ((tags (map type-tag args)))
+		  (if (eq? (car tags) obj-tag)
+		    (tran obj-tag (cdr args))
+		    (let (bt1 (get-coercion (car tags) obj-tag))
+		      (cons (bt1 (car args)) (tran obj-tag (cdr args))))))))
+	      (tran obj-tag args)
+	      false)))
+	(define (try tags)
+	  (if (null? tags) (error "NO METHODS FOR THESE ARGS"
+				  (list op args))
+	    (let ((trans (tran2 (car tags) args)))
+	      (if trans
+		(let ((proc-pro (get op trans)))
+		  (if proc-pro
+		    proc-pro
+		    (try (cdr tags))))))))
+	(apply (try typetags) (map contents args))
+(define (apply-generic op . args)
+  (define (coerce-list lst type)
+    (if (null? lst)
+      '()
+      (let ((t1->t2 (get-coercion (type-tag (car lst)) type)))
+	(if t1->t2
+	  (cons (t1->t2 (car lst)) (coerce-list (cdr lst) type))
+	  (cons (car lst) (coerce-list (cdr lst) type))))))
+  (define (apply-coerced lst)
+    (if (null? lst)
+      (error "NO METHODS FOR THESE ARGS")
+      (let ((coerced-list (coerce-list args (type-tag (car lst)))))
+	(let ((method (get op (map type-tag coerced-list))))
+	  (if method 
+	    (apply method (map contents coerced-list))
+	    (apply-coerced (cdr lst)))))))
+  (let ((type-tags (map type-tag args)))
+    (let ((proc (get op type-tags)))
+      (if proc 
+	(apply proc (map contents args))
+	(apply-coerced args)))))
+

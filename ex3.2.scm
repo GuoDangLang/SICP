@@ -1,0 +1,6 @@
+(define (make-monitored procedure)
+  (let ((count 0))
+    (lambda (x)
+      (cond ((eq? x 'how-many-calls?) count)
+	    ((eq? x 'reset-count) (begin (set! count 0) (display "the count is") count))
+	    (else (begin (set! count (+ count 1)) (procedure x)))))))

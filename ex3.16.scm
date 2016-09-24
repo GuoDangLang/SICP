@@ -1,0 +1,18 @@
+(define (count-pairs x)
+  (if (not (pair? x))
+    0
+    (+ (count-pairs (car x))
+       (count-pairs (cdr x))
+       1)))
+(define two (cons (cons 'a 'b) (cons 'c 'd)))
+(define x (list 'a 'b 'c))
+(set-cdr! (last-pair x) x)
+(define (last-pair x)
+  (if (null? (cdr x))
+    x
+    (last-pair (cdr x))))
+(define t (list 'a 'b))
+(define y (cons t (cdr t)))
+(define f (list 'b))
+(define g (cons f f))
+(define z (cons g g))

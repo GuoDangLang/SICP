@@ -1,0 +1,12 @@
+(load "commonfunc")
+(define nil (list))
+(define (square-tree tree)
+  (cond ((null? tree) nil)
+	((not (pair? tree)) (square tree))
+	(else (cons (square-tree (car tree)) (square-tree (cdr tree))))))
+(define (square-tree-recu tree)
+  (map (lambda (sub-tree)
+	 (if (pair? sub-tree)
+	   (square-tree-recu sub-tree)
+	   (square sub-tree))) tree))
+

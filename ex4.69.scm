@@ -1,0 +1,8 @@
+(rule (grandson ?c ?d)
+      (and (son ?x ?c)
+	   (son ?d ?x)))
+(rule ((grandson) ?x ?y)
+      (grandson ?x ?y))
+(rule ((great . ?rel) ?a ?b)
+      (and (son ?x ?b)
+	   (?rel ?x ?a)))

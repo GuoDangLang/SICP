@@ -1,0 +1,23 @@
+(define (install-project-package)
+  (define (push-rational ra)
+    (attach-tag 'integer (floor (/ (numer ra) (denom ra)))))
+  (define (push-real real)
+    (attach-tag 'rational (cons (floor real) 1)))
+  (define (push-complex comp)
+    (attach-tag 'real (real-part comp)))
+  (put-tower 'project 'rational push-rational)
+  (put-tower 'project 'real push-real)
+  (put-tower 'project 'complex push-complex)
+  'done)
+(install-project-package)
+(define (drop x)
+  (let ((tag (type-tag x)))
+    (let ((method (get-tower 'project tag)))
+      (if method 
+	(let ((temp (method (contents x))))
+	  (if (equ? temp (raise x))
+	    (drop temp)
+	    x))
+	x))))
+
+

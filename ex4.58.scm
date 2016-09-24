@@ -1,0 +1,5 @@
+(rule (big-shot ?person ?division)
+      (and (job ?person (?division . ?whatever))
+	   (or (not (supervisor ?person ?sup))
+	       (and (supervisor ?person ?sup)
+		    (not (job ?sup (?division . ?what)))))))

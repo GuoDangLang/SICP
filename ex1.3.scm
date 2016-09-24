@@ -1,0 +1,5 @@
+(define (min-three x y z) ((cond ((< x y) (if (< x z) x z))
+			   (else (if (< y z) y z)))))
+(define (square x) (* x x))
+(define (sum-of-larger-two) (- (+ (square x) (square y) (square z)) 
+			       (square (min-three x y z))))

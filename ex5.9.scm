@@ -1,0 +1,10 @@
+(define (make-operation-exp exp machine labels operation)
+  (let ((op (lookup-prim (operation-exp-op exp) operation))
+	(aprocs 
+	  (map (lambda (e)
+		 (if (label-exp? e)
+		   (error "Unvalid argument")
+		   (make-primitive-exp e machine labels))
+		 (operation-exp-operands exp))))
+	(lambda ()
+	  (apply op (map (lambda (p) (p)) aprocs))))))

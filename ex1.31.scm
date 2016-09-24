@@ -1,0 +1,6 @@
+(define (odd? num) (= (remainder num 2) 1))
+(define (up u) (if (odd? u) (+ 1 u) (+ 2 u)))
+(define (low l) (if (odd? l) (+ 2 l) (+ 1 l)))
+(define (inc a) (+ a 1))
+(define (pi-formula n)
+  (* 4 (/ (product up 1 inc n) (product low 1 inc n))))

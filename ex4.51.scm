@@ -1,0 +1,13 @@
+(define (an-element-of li)
+  (if (null? li) (amb)
+    (amb (car li) (an-element-of (cdr li)))))
+(if-fail (let ((x (an-element-of '(1 3 5 8))))
+	              (require (even? x))
+		                 x)
+	          'all-odd
+(define count 0)
+(let ((x (an-element-of '(a b c)))
+      (y (an-element-of '(a b c))))
+  (permanent-set! count (+ count 1))
+  (require (not (eq? x y)))
+  (list x y count))

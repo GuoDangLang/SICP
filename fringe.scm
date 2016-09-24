@@ -1,0 +1,16 @@
+(define (fringe tree)
+  (define nil (list))
+  (if (null? tree)
+    nil
+    (let ((first (car tree)))
+      (if (not (pair? first))
+	(cons first (fringe (cdr tree)))
+	(append (fringe first) (fringe (cdr tree)))))))
+(define (fringe-solu tree) 
+  (define nil (list))
+  (if (null? tree)
+    nil
+    (let ((first (car tree)))
+      (if (not (pair? first))
+	(cons first (fringe-solu (cdr tree)))
+	(append (fringe-solu first) (fringe-solu (cdr tree)))))))

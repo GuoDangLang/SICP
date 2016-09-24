@@ -1,0 +1,27 @@
+(load "stream-pac")
+(define (merge-weighted s b weight)
+  (cond ((stream-null? s) b)
+	((stream-null? b) s)
+	(else (let ((scar (stream-car s))
+		    (bcar (stream-car b)))
+		(cond ((< (weight scar) (weight bcar)) (cons-stream scar
+								    (merge-weighted (stream-cdr s) b weight)))
+		      ((> (weight scar) (weight bcar)) (cons-stream bcar
+								    (merge-weighted s
+										    (stream-cdr b) weight)))
+		      (else (cons-stream scar (merge-weighted (stream-cdr s) b weight))))))))
+(define (weighted-pairs a b w)
+  (cons-stream (list (stream-car a) (stream-car b))
+	       (merge-weighted (stream-map (lambda (x) (list (stream-car a) x))
+					   (stream-cdr b))
+			       (weighted-pairs (stream-cdr a) (stream-cdr b) w)
+			       w)))
+(define (weight1 p1)
+  (+ (car p1) (cadr p1)))
+(define a. (weighted-pairs integers integers weight1))
+(define weight2 (lambda (x) (+ (* 2 (car x)) (* 3 (cadr x)) (* 5 (cadr x) (car x)))))
+(define devide? (lambda (x y) (= (remainder x y) 0)))
+(define seq (stream-filter (lambda (x) (not (or (devide? x 2) (devide? x 3) (devide? x 5)))) integers))
+(define b. (weighted-pairs seq seq weight2))
+;;; there is a bug in the exercise,the row of the matrix (eg. (lambda (x)
+;;; (list (stream-car s) x) (stream-cdr b))) , may not be ordered under the limit of weight. so be careful.

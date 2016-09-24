@@ -1,0 +1,5 @@
+(define (notpair? x) (not (pair? x)))
+(define (re-count-leaves_self_written t)
+  (accumulate (lambda (x y) (if (not (pair? x)) (+ 1 y) (+ (re-count-leaves x) y))) 0 t))
+(define (re-count-leaves t)
+  (accumulate + 0 (map (lambda (x) (if (not (pair? x)) 1 (re-count-leaves x))) t)))
